@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, AlertTriangle, X, BarChart3, Leaf } from 'lucide-react';
+import { CheckCircle, AlertTriangle, X, BarChart3, Leaf, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export interface Disease {
@@ -13,11 +13,13 @@ export interface Disease {
 }
 
 interface ResultsCardProps {
+  plantName: string;
+  plantType: string;
   results: Disease[] | null;
   onClose: () => void;
 }
 
-const ResultsCard: React.FC<ResultsCardProps> = ({ results, onClose }) => {
+const ResultsCard: React.FC<ResultsCardProps> = ({ plantName, plantType, results, onClose }) => {
   if (!results || results.length === 0) return null;
   
   const primaryDisease = results[0]; // The most likely disease
@@ -75,6 +77,19 @@ const ResultsCard: React.FC<ResultsCardProps> = ({ results, onClose }) => {
         </div>
         
         <div className="space-y-4">
+          {/* Plant Identification Section */}
+          <div className="space-y-2">
+            <h4 className="font-medium text-sage-900">Plant Identification</h4>
+            <div className="p-4 bg-white/50 backdrop-blur-sm rounded-xl">
+              <div className="flex items-center gap-2 mb-2">
+                <Info className="h-4 w-4 text-sage-600" />
+                <h5 className="font-semibold text-lg text-sage-800">{plantName}</h5>
+              </div>
+              <p className="text-sm text-sage-700 italic mb-2">{plantType}</p>
+            </div>
+          </div>
+          
+          {/* Disease Detection Section */}
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <h4 className="font-medium text-sage-900">Primary Detection</h4>

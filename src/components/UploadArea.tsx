@@ -3,7 +3,7 @@ import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Upload, X, Image, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { toast } from '@/hooks/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 interface UploadAreaProps {
   onImageUploaded: (imageFile: File) => void;
@@ -13,6 +13,7 @@ interface UploadAreaProps {
 const UploadArea: React.FC<UploadAreaProps> = ({ onImageUploaded, isLoading = false }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const { toast } = useToast();
   
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -56,13 +57,21 @@ const UploadArea: React.FC<UploadAreaProps> = ({ onImageUploaded, isLoading = fa
   const validateAndProcessImage = (file: File) => {
     // Check if file is an image
     if (!file.type.startsWith('image/')) {
-      toast.error('Please upload an image file (JPEG, PNG, etc.)');
+      toast({
+        title: "Error",
+        description: "Please upload an image file (JPEG, PNG, etc.)",
+        variant: "destructive"
+      });
       return;
     }
     
     // Check file size (max 10MB)
     if (file.size > 10 * 1024 * 1024) {
-      toast.error('File size too large (max 10MB)');
+      toast({
+        title: "Error",
+        description: "File size too large (max 10MB)",
+        variant: "destructive"
+      });
       return;
     }
     
